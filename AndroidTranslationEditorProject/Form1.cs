@@ -184,6 +184,14 @@ namespace AndroidTranslationEditor
 
         public static void XMLWrite(string path, string id, string value)
         {
+            // Escape characters
+            value = value.Replace(@"'",@"\'");
+            value = value.Replace(@"\\", @"\");
+
+            value = value.Replace(@"\", @"\\");
+            value = value.Replace("\"", "\\\"");
+
+            
             XmlDocument XMLWrite = new XmlDocument();
 
             XMLWrite.Load(path);
