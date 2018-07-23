@@ -8,14 +8,14 @@ using System.Xml;
 
 namespace AndroidTranslationEditor
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
-        List<List<XMLValue>> LanguageLists = new List<List<XMLValue>>();
+        List<List<XMLValue>> languageLists = new List<List<XMLValue>>();
         List<String> keyList = new List<string>();
         List<String> openFiles = new List<string>();
         Boolean loadingFile = true;
 
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
         }
@@ -25,6 +25,12 @@ namespace AndroidTranslationEditor
             ApplyDesign();
         }
 
+        /// <summary>
+        /// Function that get executed when the OpenFile button has been pressed
+        /// and it loads a user specified XML file and set everythin up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -40,6 +46,12 @@ namespace AndroidTranslationEditor
             }           
         }
 
+        /// <summary>
+        /// Function that get executed when the CreateFile button has been pressed
+        /// and it creates a empty xml file at a user set location
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreateFile_Click(object sender, EventArgs e)
         {
             SaveFileDialog fileDialog = new SaveFileDialog();
@@ -63,13 +75,40 @@ namespace AndroidTranslationEditor
             }
         }
 
+        /// <summary>
+        /// Function that get executed when a cell has been changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CellUpdated(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!loadingFile)
+            {
+                XMLprocessing.XMLWrite(openFiles[e.ColumnIndex - 1], keyList[e.RowIndex], (string)table.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            }
+        }
+
+        /// <summary>
+        /// Function that adds: 
+        /// - the current XML file to the languageList List
+        /// - the XML file path to the openFile List
+        /// calls FillTable function
+        /// </summary>
+        /// <param name="path">Path to XML source file</param>
+        /// <param name="name">XML source file name</param>
         public void AddFileEntry(string path, string name)
         {
-            LanguageLists.Add(XMLprocessing.XMLRead(path));
+            languageLists.Add(XMLprocessing.XMLRead(path));
             openFiles.Add(path);
             FillTable(path, name);
         }
 
+        /// <summary>
+        /// Function, that fills the DataGridView(table) with data
+        /// out of the LanguageList List
+        /// </summary>
+        /// <param name="path">Path to XML source file</param>
+        /// <param name="name">XML source file name</param>
         public void FillTable(string path, string name)
         {
             table.Visible = true;
@@ -77,7 +116,7 @@ namespace AndroidTranslationEditor
 
             int activeColumn = table.Columns.Add(path, name);
 
-            foreach(XMLValue current in LanguageLists[activeColumn-1])
+            foreach(XMLValue current in languageLists[activeColumn-1])
             {
                 if(keyList.Contains(current.StringName))
                 {
@@ -92,7 +131,6 @@ namespace AndroidTranslationEditor
                     table.Rows[currentIndex].Cells[activeColumn].Value = current.StringText;
 
                     //If not translatable
-
                     if(!current.StringTranslateable)
                     {
                         table.Rows[currentIndex].ReadOnly = true;
@@ -100,21 +138,14 @@ namespace AndroidTranslationEditor
                     }
                 }
             }
-
             table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-             table.Columns[activeColumn].SortMode = DataGridViewColumnSortMode.NotSortable;
-
+            table.Columns[activeColumn].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
-        private void CellUpdated(object sender, DataGridViewCellEventArgs e)
-        {
-            if(!loadingFile)
-            {
-                XMLprocessing.XMLWrite(openFiles[e.ColumnIndex - 1], keyList[e.RowIndex], (string)table.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-            }        
-        }
-
+       
+        /// <summary>
+        /// Function that sets all options for the DataGridView (table)
+        /// </summary>
         private void ApplyDesign()
         {
             //Permissions
@@ -127,102 +158,22 @@ namespace AndroidTranslationEditor
             table.AutoGenerateColumns = false;
 
             //Styles
-
             table.BorderStyle = BorderStyle.Fixed3D;
             table.DefaultCellStyle.SelectionBackColor = Color.White;
             table.DefaultCellStyle.SelectionForeColor = Color.Blue;
-
             Font columnFont = new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold);
             table.ColumnHeadersDefaultCellStyle.Font = columnFont;
 
             // Wrap
             table.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             table.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-
             table.AllowDrop = false;
             table.AllowUserToOrderColumns = false;
-
             table.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
             table.RowHeadersVisible = false;
 
             // lag compensation
             DoubleBuffered = true;
-        }   
-                      
-    }
-
-    public class XMLprocessing
-    {
-        public static List<XMLValue> XMLRead(string path)
-        {
-            XmlDocument XMLRead = new XmlDocument();
-            List<XMLValue> values = new List<XMLValue>();
-
-            XMLRead.Load(path);
-
-            foreach (XmlNode node in XMLRead.SelectNodes("/resources/string"))
-            {
-                XMLValue currentValue = new XMLValue();
-
-                currentValue.StringText = node.InnerText;
-
-                foreach (XmlAttribute attribute in node.Attributes)
-                {
-                    switch (attribute.Name)
-                    {
-                        case "name":
-                            currentValue.StringName = attribute.Value;
-                            break;
-
-                        case "translatable":
-                            currentValue.StringTranslateable = Boolean.Parse(attribute.Value);
-                            break;
-                    }
-                }
-                values.Add(currentValue);
-            }
-            return values;
-        }
-
-        public static void XMLWrite(string path, string id, string value)
-        {
-            // Escape characters
-            value = value.Replace(@"'",@"\'");
-            value = value.Replace(@"\\", @"\");
-
-            value = value.Replace(@"\", @"\\");
-            value = value.Replace("\"", "\\\"");
-
-            
-            XmlDocument XMLWrite = new XmlDocument();
-
-            XMLWrite.Load(path);
-
-            if (XMLWrite.SelectSingleNode("/resources/string[@name='" + id + "']") != null)
-            {
-                XMLWrite.SelectSingleNode("/resources/string[@name='" + id + "']").InnerText = value;
-            }
-            else
-            {
-                XmlNode newItem = XMLWrite.CreateElement("string");
-                newItem.InnerText = value;
-
-                XmlAttribute newAttr = XMLWrite.CreateAttribute("name");
-                newAttr.InnerText = id;
-
-                newItem.Attributes.Append(newAttr);
-
-                XMLWrite.SelectSingleNode("/resources").AppendChild(newItem);
-
-            }
-            XMLWrite.Save(path);
-        }
-    }
-
-    public class XMLValue
-    {
-        public String StringName;
-        public String StringText;
-        public Boolean StringTranslateable = true;
+        }                      
     }
 }

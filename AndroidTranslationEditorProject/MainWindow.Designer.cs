@@ -1,6 +1,6 @@
 ﻿namespace AndroidTranslationEditor
 {
-    partial class Form1
+    partial class MainWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,21 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.table = new System.Windows.Forms.DataGridView();
+            this.C1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileOutput = new System.Windows.Forms.SaveFileDialog();
             this.fileInput = new System.Windows.Forms.OpenFileDialog();
             this.toolBar = new System.Windows.Forms.ToolStrip();
             this.OpenFile = new System.Windows.Forms.ToolStripButton();
             this.CreateFile = new System.Windows.Forms.ToolStripButton();
             this.About = new System.Windows.Forms.ToolStripButton();
-            this.C1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.toolBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // table
             // 
+            this.table.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.table.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -51,7 +54,15 @@
             this.table.Name = "table";
             this.table.Size = new System.Drawing.Size(800, 419);
             this.table.TabIndex = 0;
+            this.table.Visible = false;
             this.table.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CellUpdated);
+            // 
+            // C1
+            // 
+            this.C1.HeaderText = "Key";
+            this.C1.Name = "C1";
+            this.C1.ReadOnly = true;
+            this.C1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // fileInput
             // 
@@ -98,13 +109,6 @@
             this.About.Size = new System.Drawing.Size(23, 22);
             this.About.Text = "He&lp";
             // 
-            // C1
-            // 
-            this.C1.HeaderText = "Key";
-            this.C1.Name = "C1";
-            this.C1.ReadOnly = true;
-            this.C1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -113,7 +117,7 @@
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.table);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Android Translation Editor";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
             this.toolBar.ResumeLayout(false);
