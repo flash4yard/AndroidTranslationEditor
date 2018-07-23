@@ -10,7 +10,6 @@ namespace AndroidTranslationEditor
 {
     public partial class Form1 : Form
     {
-
         List<List<XMLValue>> LanguageLists = new List<List<XMLValue>>();
         List<String> keyList = new List<string>();
         List<String> openFiles = new List<string>();
@@ -28,8 +27,6 @@ namespace AndroidTranslationEditor
 
         private void OpenFile_Click(object sender, EventArgs e)
         {
-
-
             OpenFileDialog fileDialog = new OpenFileDialog();
 
             fileDialog.Filter = "XML files|*.xml";
@@ -105,6 +102,9 @@ namespace AndroidTranslationEditor
             }
 
             table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+             table.Columns[activeColumn].SortMode = DataGridViewColumnSortMode.NotSortable;
+
         }
 
         private void CellUpdated(object sender, DataGridViewCellEventArgs e)
@@ -123,6 +123,8 @@ namespace AndroidTranslationEditor
             table.SelectionMode = DataGridViewSelectionMode.CellSelect;
             table.MultiSelect = false;
             table.AllowUserToResizeColumns = true;
+            table.AllowUserToOrderColumns = false;
+            table.AutoGenerateColumns = false;
 
             //Styles
 

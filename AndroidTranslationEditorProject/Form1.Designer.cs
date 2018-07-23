@@ -30,19 +30,20 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.table = new System.Windows.Forms.DataGridView();
-            this.C1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileOutput = new System.Windows.Forms.SaveFileDialog();
             this.fileInput = new System.Windows.Forms.OpenFileDialog();
             this.toolBar = new System.Windows.Forms.ToolStrip();
             this.OpenFile = new System.Windows.Forms.ToolStripButton();
             this.CreateFile = new System.Windows.Forms.ToolStripButton();
             this.About = new System.Windows.Forms.ToolStripButton();
+            this.C1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.toolBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // table
             // 
+            this.table.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.C1});
@@ -51,12 +52,6 @@
             this.table.Size = new System.Drawing.Size(800, 419);
             this.table.TabIndex = 0;
             this.table.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CellUpdated);
-            // 
-            // C1
-            // 
-            this.C1.HeaderText = "Key";
-            this.C1.Name = "C1";
-            this.C1.ReadOnly = true;
             // 
             // fileInput
             // 
@@ -103,6 +98,13 @@
             this.About.Size = new System.Drawing.Size(23, 22);
             this.About.Text = "He&lp";
             // 
+            // C1
+            // 
+            this.C1.HeaderText = "Key";
+            this.C1.Name = "C1";
+            this.C1.ReadOnly = true;
+            this.C1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,13 +126,13 @@
         #endregion
 
         private System.Windows.Forms.DataGridView table;
-        private System.Windows.Forms.DataGridViewTextBoxColumn C1;
         private System.Windows.Forms.SaveFileDialog fileOutput;
         private System.Windows.Forms.OpenFileDialog fileInput;
         private System.Windows.Forms.ToolStrip toolBar;
         private System.Windows.Forms.ToolStripButton CreateFile;
         private System.Windows.Forms.ToolStripButton OpenFile;
         private System.Windows.Forms.ToolStripButton About;
+        private System.Windows.Forms.DataGridViewTextBoxColumn C1;
     }
 }
 
