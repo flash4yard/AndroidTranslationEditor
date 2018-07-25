@@ -21,29 +21,37 @@ namespace AndroidTranslationEditor
             XmlDocument XMLRead = new XmlDocument();
             List<XMLValue> values = new List<XMLValue>();
 
-            XMLRead.Load(path);
-
-            foreach (XmlNode node in XMLRead.SelectNodes("/resources/string"))
+            try
             {
-                XMLValue currentValue = new XMLValue();
-                currentValue.StringText = node.InnerText;
+                XMLRead.Load(path);
 
-                foreach (XmlAttribute attribute in node.Attributes)
+                foreach (XmlNode node in XMLRead.SelectNodes("/resources/string"))
                 {
-                    switch (attribute.Name)
-                    {
-                        case "name":
-                            currentValue.StringName = attribute.Value;
-                            break;
+                    XMLValue currentValue = new XMLValue();
+                    currentValue.StringText = node.InnerText;
 
-                        case "translatable":
-                            currentValue.StringTranslateable = Boolean.Parse(attribute.Value);
-                            break;
+                    foreach (XmlAttribute attribute in node.Attributes)
+                    {
+                        switch (attribute.Name)
+                        {
+                            case "name":
+                                currentValue.StringName = attribute.Value;
+                                break;
+
+                            case "translatable":
+                                currentValue.StringTranslateable = Boolean.Parse(attribute.Value);
+                                break;
+                        }
                     }
+                    values.Add(currentValue);
                 }
-                values.Add(currentValue);
+                return values;
             }
-            return values;
+            catch(XmlException e)
+            {               
+                throw e;
+            }
+           
         }
 
         /// <summary>

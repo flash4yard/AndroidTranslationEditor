@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -36,7 +37,7 @@ namespace AndroidTranslationEditor
             OpenFileDialog fileDialog = new OpenFileDialog();
 
             fileDialog.Filter = "XML files|*.xml";
-            fileDialog.ShowDialog();
+            fileDialog.ShowDialog();          
 
             if (fileDialog.FileName != "")
             {
@@ -98,9 +99,16 @@ namespace AndroidTranslationEditor
         /// <param name="name">XML source file name</param>
         public void AddFileEntry(string path, string name)
         {
-            languageLists.Add(XMLprocessing.XMLRead(path));
-            openFiles.Add(path);
-            FillTable(path, name);
+            try
+            {
+                languageLists.Add(XMLprocessing.XMLRead(path));
+                openFiles.Add(path);
+                FillTable(path, name);
+            }
+            catch (XmlException e)
+            {
+                MessageBox.Show("Error occured: " + e);
+            }      
         }
 
         /// <summary>
@@ -142,12 +150,12 @@ namespace AndroidTranslationEditor
             table.Columns[activeColumn].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
-       
         /// <summary>
         /// Function that sets all options for the DataGridView (table)
         /// </summary>
         private void ApplyDesign()
         {
+            
             //Permissions
             table.AllowUserToAddRows = false;
             table.AllowUserToDeleteRows = false;
@@ -174,6 +182,7 @@ namespace AndroidTranslationEditor
 
             // lag compensation
             DoubleBuffered = true;
-        }                      
+        }
+
     }
 }

@@ -87,6 +87,7 @@
             this.OpenFile.Name = "OpenFile";
             this.OpenFile.Size = new System.Drawing.Size(23, 22);
             this.OpenFile.Text = "&Open";
+            this.OpenFile.ToolTipText = "Open XML file";
             this.OpenFile.Click += new System.EventHandler(this.OpenFile_Click);
             // 
             // CreateFile
@@ -97,6 +98,7 @@
             this.CreateFile.Name = "CreateFile";
             this.CreateFile.Size = new System.Drawing.Size(23, 22);
             this.CreateFile.Text = "&New";
+            this.CreateFile.ToolTipText = "Create new template";
             this.CreateFile.Click += new System.EventHandler(this.CreateFile_Click);
             // 
             // About
@@ -108,6 +110,7 @@
             this.About.Name = "About";
             this.About.Size = new System.Drawing.Size(23, 22);
             this.About.Text = "He&lp";
+            this.About.ToolTipText = "About";
             // 
             // MainWindow
             // 
